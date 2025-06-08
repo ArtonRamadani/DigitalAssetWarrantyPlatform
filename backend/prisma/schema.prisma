@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int         @id @default(autoincrement())
+  name      String
+  email     String      @unique
+  assets    DigitalAsset[]
+
+  @@map("users")
+}
+
+model DigitalAsset {
+  id          Int      @id @default(autoincrement())
+  name        String
+  category    String
+  value       Decimal  @db.Decimal(10, 2)
+  purchaseDate DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userId      Int?
+  user        User?    @relation(fields: [userId], references: [id])
+  warrantyQuotes WarrantyQuote[]
+
+  @@map("digital_assets")
+}
+
+model WarrantyQuote {
+  id          Int      @id @default(autoincrement())
+  quoteAmount Decimal  @db.Decimal(10, 2)
+  providerName String
+  validUntil  DateTime
+  createdAt   DateTime @default(now())
+  assetId     Int
+  asset       DigitalAsset @relation(fields: [assetId], references: [id])
+
+  @@map("warranty_quotes")
+}
