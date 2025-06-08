@@ -2,7 +2,7 @@ import axios from 'axios';
 import { CreateDigitalAssetInput, DigitalAsset, WarrantyQuote } from '../types/digitalAsset';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8001',
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api',
 });
 
 api.interceptors.response.use(
